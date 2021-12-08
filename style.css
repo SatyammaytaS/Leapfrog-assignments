@@ -1,0 +1,48 @@
+body {
+  padding-left: 50px;
+  font-family: "Teko", sans-serif;
+  background-image: url("images/bg1.png");
+  background-size: cover;
+  color: #ffffff;
+}
+.heading {
+  text-align: center;
+}
+.info {
+  text-align: center;
+  height: 120px;
+  width: 100%;
+}
+
+.info p {
+  line-height: 5px;
+}
+
+.table {
+  margin: 30px 10px;
+  font-size: 23px;
+  min-width: 500px;
+  border-collapse: collapse;
+}
+
+.row {
+  color: rgb(255, 255, 255);
+  border-bottom: 1px solid rgb(255, 255, 255);
+  text-align: left;
+}
+
+.table tbody tr {
+  border-bottom: 1px solid #ffffff;
+}
+.table th,
+.table td {
+  padding: 10px 10px;
+}
+
+.table tbody tr td a {
+  text-decoration: none;
+  color: rgb(255, 255, 255);
+}
+.table tbody tr td a:hover {
+  color: rgb(212, 147, 5);
+}
