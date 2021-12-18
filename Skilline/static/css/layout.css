@@ -6,6 +6,11 @@
   width: 95%;
 }
 
+.header {
+  background-image: url("../img/header-background.png");
+  background-repeat: no-repeat;
+  background-size: cover;
+}
 .footer {
   height: 400px;
   background-color: #252641;
@@ -18,36 +23,74 @@
   padding: 10px;
   display: inline-flex;
 }
+.orange {
+  color: #f48c06;
+}
+.blue {
+  color: #2f327d;
+}
+.Our-features {
+  margin-top: 160px;
+  text-align: center;
+}
+.ui-design ul li {
+  display: inline-block;
+}
+.ui-design-img {
+  margin-right: 170px;
+}
+.view-icon {
+  display: inline-flex;
+}
 
+.all-in-one {
+  text-align: center;
+}
+.all-in-one ul li {
+  display: inline-block;
+}
+.Bill-script {
+  border-radius: 10%;
+  background-color: #ffffff;
+  width: 40%;
+  margin: 0 auto;
+  box-shadow: 1px 1px 10px #888888;
+}
 @media (min-width: 1920px) {
   .main-wrapper {
     width: 120em;
     overflow: hidden;
+    margin: 0 auto;
   }
-  .whole-container {
+  .Bill-script {
+    width: 450px;
+    height: 430px;
+  }
+  .whole-container,
+  .top-header,
+  .bottom-header {
     width: 98%;
     margin: 0 auto;
   }
-  .top-header {
-    width: 100%;
+  .logo {
+    padding: 14px 0;
+    float: left;
   }
-  .logo{
-      padding: 14px 0;
-      float: left;
-  }
-
   .header-details {
-    display: block;
     float: right;
     width: 60%;
     font-size: 22px;
-    
   }
   .header-details-list {
-    display: inline-flex;
-    list-style: none;
     padding: 35px 0;
-    
+    float: left;
+  }
+  .header-details-list ul {
+    list-style: none;
+  }
+  .header-details-list ul li {
+    display: inline-block;
+    color: #252641;
   }
   .nav {
     margin-left: 82px;
@@ -61,8 +104,167 @@
     float: left;
   }
   .navigation {
-      padding-top: 35px;
+    padding-top: 35px;
+    float: right;
   }
+  .bottom-header {
+    display: inline-block;
+  }
+
+  .companies {
+    width: 90%;
+    margin: 0 auto;
+  }
+  .companies ul li {
+    display: inline-block;
+    list-style: none;
+    text-align: center;
+    margin-left: 76px;
+  }
+  .company-script {
+    text-align: center;
+    padding: 56px;
+  }
+  .all-in-one {
+    margin-top: 160px;
+    margin-bottom: 158px;
+  }
+
+  .instructions-img {
+    background-image: url(../img/instructions.img.png);
+    background-size: cover;
+    background-repeat: no-repeat;
+    width: 100%;
+    padding: 173px 0;
+  }
+  .instructions-img div {
+    width: 80%;
+    text-align: center;
+  }
+  .students-img {
+    background-image: url(../img/students-img.png);
+    background-size: cover;
+    background-repeat: no-repeat;
+    width: 100%;
+    padding: 173px 0;
+  }
+  .students-img div {
+    width: 80%;
+
+    text-align: center;
+  }
+  .everything {
+    width: 100%;
+    text-align: center;
+  }
+  .everything ul li {
+    display: inline-block;
+    text-align: initial;
+  }
+  .everything-script {
+    margin-right: 86px;
+    position: relative;
+    bottom: 144px;
+  }
+  .everything-script h3 {
+    font-weight: 500;
+    font-size: 36px;
+    line-height: 57.6px;
+  }
+  .everything-script p {
+    font-weight: 400;
+    font-size: 24px;
+    line-height: 43.2px;
+  }
+
+  .tools ul li {
+    display: inline-block;
+    text-align: initial;
+  }
+  .tools-script {
+    margin-right: 236px;
+    position: relative;
+    bottom: 144px;
+  }
+  .quiz ul li {
+    display: inline-block;
+    text-align: initial;
+  }
+  .quiz-script {
+    position: relative;
+    bottom: 315px;
+  }
+  .quiz-img {
+    margin-right: 248px;
+  }
+  .educators ul li {
+    display: inline-block;
+    text-align: initial;
+  }
+  .educators-script {
+    margin-right: 118px;
+    position: relative;
+    bottom: 144px;
+  }
+  .discuss ul li {
+    display: inline-block;
+    text-align: initial;
+  }
+  .discuss-script {
+    position: relative;
+    bottom: 144px;
+  }
+  .discuss-img {
+    margin-right: 190px;
+  }
+  .Our-features {
+    margin-bottom: 160px;
+  }
+  .platform ul li {
+    display: inline-block;
+    text-align: initial;
+  }
+  .platform {
+    text-align: center;
+    margin-bottom: 150px;
+  }
+  .platform-icons {
+    margin-right: 292px;
+  }
+  .rating {
+    text-align: center;
+  }
+  .rating-img {
+    margin-left: 190px;
+  }
+  .rating ul li {
+    display: inline-block;
+    text-align: initial;
+  }
+  .rating-script {
+    position: relative;
+    bottom: 144px;
+  }
+  .news {
+    text-align: center;
+    margin-top: 150px;
+  }
+  .news ul li {
+    display: inline-block;
+  }
+  .news-right ul li {
+    display: block;
+  }
+  .demand-news ul li {
+    display: inline-block;
+  }
+  .school-news ul li {
+    display: inline-block;
+  }
+  .ceo-news ul li {
+    display: inline-block;
+  }
+
   .footer {
     height: 550px;
     background-color: #252641;

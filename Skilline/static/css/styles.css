@@ -74,6 +74,105 @@
     display: inline-flex;
     margin-bottom: 70px;
   }
+  /* companies */
+  .company-script {
+    font-size: 28px;
+    font-weight: 600;
+    color: #696984;
+  }
+  /* all in one */
+  .all-in-one h2 {
+    margin-bottom: 20px;
+    font-size: 36px;
+    font-weight: 700;
+  }
+  .all-in-one p {
+    color: #696984;
+    font-size: 24px;
+    font-weight: 400;
+  }
+  .all-in-one ul {
+    margin-top: 103px;
+  }
+  .Bill-script h3 {
+    font-weight: 500;
+    font-size: 30px;
+    line-height: 45px;
+  }
+  .Bill-script p {
+    font-size: 20px;
+    font-weight: 400;
+  }
+
+  /*skyline*/
+  .what-is-skilline {
+    text-align: center;
+    margin-bottom: 160px;
+  }
+  .what-is-skilline ul li {
+    display: inline-block;
+    width: 600px;
+    height: 400px;
+  }
+  .what-is-skilline ul li:first-child {
+    margin-right: 100px;
+  }
+
+  .what-is-skilline h2 {
+    margin-bottom: 20px;
+    font-size: 44px;
+    font-weight: 600;
+  }
+  .what-is-skilline p {
+    font-size: 24px;
+    font-weight: 400;
+    line-height: 43.2px;
+    color: #696984;
+    margin-bottom: 80px;
+  }
+  /*our features*/
+  .Our-features h3 {
+    font-size: 36px;
+    font-weight: 700;
+    line-height: 64.8px;
+  }
+  .Our-features p {
+    font-size: 24px;
+    font-weight: 400;
+    color: #696984;
+    line-height: 43.2px;
+  }
+  .Our-features h2 {
+    font-size: 40px;
+    font-weight: 600;
+    line-height: 64px;
+  }
+  /* */
+  .rating h2 {
+    font-size: 60px;
+    font-weight: 700;
+    line-height: 81.84px;
+  }
+  .rating p {
+    font-size: 26px;
+    font-weight: 400;
+    line-height: 41.6px;
+    margin-bottom: 34px;
+    color: #696984;
+  }
+  /* */
+  .news h2 {
+    font-size: 36px;
+    font-weight: 700;
+    line-height: 64.8px;
+  }
+  .news p {
+    font-size: 24px;
+    font-weight: 400;
+    line-height: 43.2px;
+    color: #696984;
+  }
+  /* */
   .nav2 {
     width: 160px;
     height: 60px;
@@ -83,11 +182,30 @@
     margin-left: 10px;
   }
   .nav3 {
-   width: 160px;
+    width: 160px;
     height: 60px;
-    background-color: #F48C06;
+    background-color: #f48c06;
     border-radius: 50px 50px 50px 50px;
     padding: 6px;
     margin-left: 10px;
+  }
+  .platform-icons ul li {
+    display: inline-block;
+    margin: 0 auto;
+    margin-right: 5%;
+    margin-top: 5%;
+    margin-left: 5%;
+    width: 39%;
+  }
+  .platform-script h2 {
+    font-size: 36px;
+    font-weight: 700;
+    line-height: 57.6px;
+    margin-bottom: 32px;
+  }
+  .platform-script p {
+    font-size: 24px;
+    font-weight: 400;
+    line-height: 43.2px;
   }
 }
