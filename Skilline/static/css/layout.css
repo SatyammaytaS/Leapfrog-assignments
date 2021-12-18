@@ -1,9 +1,12 @@
 .main-wrapper {
   width: 30em;
-  overflow: hidden;
+  margin: 0 auto;
 }
-.container {
-  width: 95%;
+.whole-container,
+.top-header,
+.bottom-header {
+  width: 98%;
+  margin: 0 auto;
 }
 
 .header {
@@ -39,8 +42,8 @@
 .ui-design-img {
   margin-right: 170px;
 }
-.view-icon {
-  display: inline-flex;
+.ui-design {
+  margin-bottom: 100px;
 }
 
 .all-in-one {
@@ -56,21 +59,35 @@
   margin: 0 auto;
   box-shadow: 1px 1px 10px #888888;
 }
-@media (min-width: 1920px) {
+@media screen and (min-width: 1200px) {
+  .main-wrapper {
+    width: 75rem;
+  }
+}
+
+@media screen and (min-width: 992px) {
+  .main-wrapper {
+    width: 62rem;
+  }
+}
+
+@media screen and (min-width: 768px) {
+  .main-wrapper {
+    width: 48rem;
+  }
+}
+
+@media screen and (min-width: 1920px) {
   .main-wrapper {
     width: 120em;
-    overflow: hidden;
-    margin: 0 auto;
   }
   .Bill-script {
     width: 450px;
     height: 430px;
   }
-  .whole-container,
-  .top-header,
-  .bottom-header {
-    width: 98%;
-    margin: 0 auto;
+
+  .bottom-header ul li {
+    display: inline-block;
   }
   .logo {
     padding: 14px 0;
@@ -109,6 +126,7 @@
   }
   .bottom-header {
     display: inline-block;
+    text-align: center;
   }
 
   .companies {
@@ -251,27 +269,30 @@
     margin-bottom: 150px;
   }
   .news h5 {
-      font-size: 26px;
-      font-weight: 500;
-      color: #252641;
+    font-size: 26px;
+    font-weight: 500;
+    color: #252641;
+    margin-bottom: 10px;
   }
-  .news p{
-      font-size: 20px;
-      font-weight: 400;
-      color: #696984;
+  .news p {
+    font-size: 20px;
+    font-weight: 400;
+    color: #696984;
   }
-  .news-button{
-      width: 130px;
-      height: 40px;
-      background: #f48c06;
-      border-radius: 50px 50px 50px 50px;
-      border-color: transparent;
+  .news-button {
+    width: 130px;
+    height: 40px;
+    background: #f48c06;
+    border-radius: 50px 50px 50px 50px;
+    border-color: transparent;
+    margin: 40px 0;
   }
-  .news ul{
-      margin-top: 20px;
+  .news ul {
+    margin-top: 20px;
   }
   .news-left {
     margin-right: 60px;
+    text-align: initial;
   }
   .news-right {
     margin-left: 60px;
@@ -280,6 +301,9 @@
     display: inline-block;
   }
   .news-right ul li {
+    display: block;
+  }
+  .million-news ul li {
     display: block;
   }
   .demand-news ul li {
