@@ -38,23 +38,62 @@
   margin-bottom: 35px;
 }
 .nav2 {
-    width: 160px;
-    height: 60px;
-    background-color: #ffffff;
-    border-radius: 50px 50px 50px 50px;
-    padding: 6px;
-    margin-left: 10px;
-    border-color: transparent;
+  width: 160px;
+  height: 60px;
+  background-color: #ffffff;
+  border-radius: 50px 50px 50px 50px;
+  padding: 6px;
+  margin-left: 10px;
+  border-color: transparent;
+}
+.nav3 {
+  width: 160px;
+  height: 60px;
+  background-color: #f48c06;
+  border-radius: 50px 50px 50px 50px;
+  padding: 6px;
+  margin-left: 10px;
+  border-color: transparent;
+}
+@media (min-width: 720px) {
+  .script h1 {
+    font-size: 20.22px;
+    font-weight: 700;
+    line-height: 30.33px;
   }
-  .nav3 {
-    width: 160px;
-    height: 60px;
-    background-color: #f48c06;
-    border-radius: 50px 50px 50px 50px;
-    padding: 6px;
-    margin-left: 10px;
-    border-color: transparent;
+  .script p {
+    font-size: 9px;
+    font-weight: 400;
+    line-height: 14.38px;
+    color: #464646;
   }
+}
+@media (min-width: 992px) {
+  .script h1 {
+    font-size: 27.84px;
+    font-weight: 700;
+    line-height: 41.75px;
+  }
+  .script p {
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 19.8px;
+    color: #464646;
+  }
+}
+@media (min-width: 1200px) {
+  .script h1 {
+    font-size: 33.75px;
+    font-weight: 700;
+    line-height: 50.625px;
+  }
+  .script p {
+    font-size: 15px;
+    font-weight: 400;
+    line-height: 24px;
+    color: #464646;
+  }
+}
 @media (min-width: 1920px) {
   .footer-title {
     color: #ffffff;
@@ -237,7 +276,7 @@
     line-height: 38.4px;
     color: #464646;
   }
-  
+
   .platform-icons ul li {
     display: inline-block;
     margin: 0 auto;
