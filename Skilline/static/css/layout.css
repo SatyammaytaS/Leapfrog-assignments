@@ -48,11 +48,30 @@
 }
 .ui-design-img {
   margin-right: 170px;
+  background-image: url(../img/ui-design-img.png);
+  background-size: cover;
 }
 .ui-design {
   margin-bottom: 100px;
 }
-
+.tools-img {
+  background-size: cover;
+  background-image: url(../img/tools-img.png);
+}
+.quiz-img {
+  margin-right: 248px;
+  background-image: url(../img/quiz-img.png);
+  background-size: cover;
+}
+.educators-img {
+  background-image: url(../img/educators-img.png);
+  background-size: cover;
+}
+.discuss-img {
+  margin-right: 190px;
+  background-size: cover;
+  background-image: url(../img/discuss-img.png);
+}
 .all-in-one {
   text-align: center;
 }
@@ -81,6 +100,24 @@
   width: 40%;
   font-size: 14px;
 }
+.header-girl {
+  background-image: url(../img/header-girl.png);
+  width: 892px;
+  height: 911px;
+  background-size: cover;
+}
+.rating-img {
+  margin-left: 190px;
+  display: inline-block;
+  background-size: cover;
+  background-image: url(../img/girl.png);
+  width: 140px;
+  height: 175px;
+}
+.everything-img {
+  display: inline-block;
+  background-image: url(../img/everything-img.png);
+}
 
 @media screen and (min-width: 768px) {
   .main-wrapper {
@@ -91,8 +128,40 @@
     width: 40%;
     font-size: 16px;
   }
-}
 
+  .header-girl {
+    width: 334.1px;
+    height: 341.2px;
+  }
+  .ui-design-img {
+    width: 382.4px;
+    height: 263.2px;
+  }
+  .tools-img {
+    width: 271.6px;
+    height: 244.4px;
+  }
+  .quiz-img {
+    width: 268px;
+    height: 289.5px;
+  }
+  .educators-img {
+    width: 352.4px;
+    height: 249.6px;
+  }
+  .discuss-img {
+    width: 304.4px;
+    height: 226px;
+  }
+  .rating-img {
+    width: 224px;
+    height: 280px;
+  }
+  .everything-img {
+    width: 298px;
+    height: 204.8px;
+  }
+}
 @media screen and (min-width: 992px) {
   .main-wrapper {
     width: 100%;
@@ -107,10 +176,42 @@
     width: 100px;
     height: 55px;
   }
+  .header-girl {
+    width: 464.59px;
+    height: 474.48px;
+  }
   .header-details {
     float: right;
     width: 50%;
     font-size: 18px;
+  }
+  .ui-design-img {
+    width: 492.8px;
+    height: 339.18px;
+  }
+  .tools-img {
+    width: 350px;
+    height: 314.95px;
+  }
+  .quiz-img {
+    width: 345.35px;
+    height: 373.2px;
+  }
+  .educators-img {
+    width: 454.12px;
+    height: 321.65px;
+  }
+  .discuss-img {
+    width: 392.27px;
+    height: 291.24px;
+  }
+  .rating-img {
+    width: 288.66px;
+    height: 360.82px;
+  }
+  .everything-img {
+    width: 384.02px;
+    height: 263.91px;
   }
 }
 
@@ -128,6 +229,10 @@
     display: inline-block;
     color: #252641;
   }
+  .header-girl {
+    width: 557.5px;
+    height: 569.4px;
+  }
   .whole-container,
   .top-header,
   .bottom-header {
@@ -137,6 +242,34 @@
   .logo {
     width: 100px;
     height: 55px;
+  }
+  .ui-design-img {
+    width: 597.5px;
+    height: 411.25px;
+  }
+  .tools-img {
+    width: 424.38px;
+    height: 381.88px;
+  }
+  .quiz-img {
+    width: 418.75px;
+    height: 452.5px;
+  }
+  .educators-img {
+    width: 550.62px;
+    height: 390px;
+  }
+  .discuss-img {
+    width: 475.63px;
+    height: 353.13px;
+  }
+  .rating-img {
+    width: 350px;
+    height: 437.5px;
+  }
+  .everything-img {
+    width: 465.63px;
+    height: 320px;
   }
 }
 
@@ -149,6 +282,10 @@
   }
   .main-wrapper {
     width: 100%;
+  }
+  .header-girl {
+    width: 892px;
+    height: 911px;
   }
   .Bill-script {
     width: 450px;
@@ -191,6 +328,14 @@
   .nav3 {
     margin-left: 34px;
     float: left;
+  }
+  .ui-design-img {
+    width: 956px;
+    height: 658px;
+  }
+  .educators-img {
+    width: 881px;
+    height: 629px;
   }
   .navigation {
     padding-top: 35px;
@@ -266,10 +411,18 @@
     font-size: 24px;
     line-height: 43.2px;
   }
+  .everything-img {
+    width: 745px;
+    height: 512px;
+  }
 
   .tools ul li {
     display: inline-block;
     text-align: initial;
+  }
+  .tools-img {
+    width: 679px;
+    height: 611px;
   }
   .tools-script {
     margin-right: 236px;
@@ -285,7 +438,8 @@
     bottom: 315px;
   }
   .quiz-img {
-    margin-right: 248px;
+    width: 670px;
+    height: 724px;
   }
   .educators ul li {
     display: inline-block;
@@ -305,8 +459,10 @@
     bottom: 144px;
   }
   .discuss-img {
-    margin-right: 190px;
+    width: 761px;
+    height: 565px;
   }
+
   .Our-features {
     margin-bottom: 160px;
   }
@@ -325,7 +481,8 @@
     text-align: center;
   }
   .rating-img {
-    margin-left: 190px;
+    width: 560px;
+    height: 700px;
   }
   .rating ul li {
     display: inline-block;
