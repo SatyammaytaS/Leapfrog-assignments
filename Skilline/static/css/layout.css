@@ -50,6 +50,8 @@
   margin-right: 170px;
   background-image: url(../img/ui-design-img.png);
   background-size: cover;
+  width: 239px;
+  height: 164.5px;
 }
 .ui-design {
   margin-bottom: 100px;
@@ -57,20 +59,34 @@
 .tools-img {
   background-size: cover;
   background-image: url(../img/tools-img.png);
+  display: inline-block;
+  width: 169.75px;
+  height: 152.75px;
 }
+
+
 .quiz-img {
   margin-right: 248px;
   background-image: url(../img/quiz-img.png);
   background-size: cover;
+  width: 167.5px;
+  height: 181px;
+  display: inline-block;
 }
 .educators-img {
   background-image: url(../img/educators-img.png);
   background-size: cover;
+  width: 220.25px;
+  height: 156px;
+  display: inline-block;
 }
 .discuss-img {
   margin-right: 190px;
   background-size: cover;
   background-image: url(../img/discuss-img.png);
+  width: 190.25px;
+  height: 141.25px;
+  display: inline-block;
 }
 .all-in-one {
   text-align: center;
@@ -102,8 +118,8 @@
 }
 .header-girl {
   background-image: url(../img/header-girl.png);
-  width: 892px;
-  height: 911px;
+  width: 223px;
+  height: 227.75px;
   background-size: cover;
 }
 .rating-img {
@@ -117,6 +133,9 @@
 .everything-img {
   display: inline-block;
   background-image: url(../img/everything-img.png);
+  background-size: cover;
+  width: 186.25px;
+  height: 128px;
 }
 
 @media screen and (min-width: 768px) {

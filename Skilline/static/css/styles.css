@@ -55,6 +55,15 @@
   margin-left: 10px;
   border-color: transparent;
 }
+.more-features {
+  width: 280px;
+  height: 80px;
+  background-color: transparent;
+  display: inline-block;
+  border-radius: 50px 50px 50px 50px;
+  padding: 6px;
+  border-color: black;
+}
 @media (min-width: 720px) {
   .script h1 {
     font-size: 20.22px;
