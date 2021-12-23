@@ -45,6 +45,7 @@
   padding: 6px;
   margin-left: 10px;
   border-color: transparent;
+  cursor: pointer;
 }
 .nav3 {
   width: 160px;
@@ -54,15 +55,18 @@
   padding: 6px;
   margin-left: 10px;
   border-color: transparent;
+  cursor: pointer;
 }
 .more-features {
   width: 280px;
   height: 80px;
   background-color: transparent;
+  border-color: black;
+  border: 1px solid black;
   display: inline-block;
+  cursor: pointer;
   border-radius: 50px 50px 50px 50px;
   padding: 6px;
-  border-color: black;
 }
 @media (min-width: 720px) {
   .script h1 {
