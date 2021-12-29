@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <div style="position: absolute; font-size: 30px"></div>
+
+    <canvas id="canvas" width="320" height="480"></canvas>
+
+    <script src="javascript/const.js"></script>
+    <script src="javascript/foreground.js"></script>
+    <script src="javascript/background.js"></script>
+    <script src="javascript/state.js"></script>
+    <script src="javascript/bird.js"></script>
+    <script src="javascript/pipe.js"></script>
+    <script src="javascript/score.js"></script>
+    <script src="javascript/main.js"></script>
+
+    <script>
+      /*Initiating Game*/
+      main = new Main("canvas");
+      main.mainLoop.bind(main)();
+    </script>
+  </body>
+</html>
