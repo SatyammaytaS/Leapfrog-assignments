@@ -12,7 +12,7 @@ var Bullet = function (laneIdx) {
   this.image.src = './images/bullet.png';
 };
 
-/**
+/*
  * draw bullet
  * @param {CanvasRenderingContext2D} ctx
  */
