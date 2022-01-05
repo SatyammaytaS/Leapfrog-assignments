@@ -1,0 +1,49 @@
+* {
+  margin: 0;
+  padding: 0;
+  font-family: VT323;
+}
+
+body {
+  background-image: url("../images/background.png");
+  background-position: center;
+}
+
+.canvas-container {
+  margin: auto;
+  background-color: aliceblue;
+  width: 500px;
+  position: relative;
+}
+
+.canvas-cover {
+  position: absolute;
+  width: 500px;
+  height: 365px;
+  background-color: rgb(130, 215, 255);
+  border: 2px solid #000000;
+  top: 0;
+  left: 0;
+  text-align: center;
+  padding-top: 90px;
+}
+
+.canvas-cover h1 {
+  font-size: 70px;
+  color: rgb(255, 77, 77);
+}
+
+.canvas-cover div {
+  margin-top: 30px;
+  font-size: 30px;
+}
+
+#select-files {
+  display: none;
+}
+
+canvas {
+  display: block;
+  margin: 186px auto 0 auto;
+  border: 2px solid #000000;
+}
