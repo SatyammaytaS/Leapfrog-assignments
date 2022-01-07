@@ -1,4 +1,7 @@
 export const bounce = document.getElementById("bounce");
+
+import { Player } from "./player.js"
+
 var image_dir = "images/sprite.png";
 var sheet_img = new Image();
 sheet_img.src = image_dir;
@@ -22,8 +25,18 @@ let symbolToSpriteSheetCoords = {
   J: [24, 24, 12, 12], //JUMP_HIGH_BRICK
 
 
+  PLAYER: [0, 120, 12, 12]
+
+
 
 };
+
+
+let actionState  = {
+  'go_left': false,
+  'go_right': false,
+  'jump': false
+}
 
 //same keys as symbolToSpriteSheetCoords. Will hold ImageData (change later to data URI?)
 let loadedImages = {};
@@ -51,9 +64,9 @@ var level1Config = {
     "BBSSSSSSSSSSSSSSSSSSSSSSSSBBSSSSSSBBSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSBBSSSSSSSSSSSSSSSSSSSSBBSSSSSSSSSBBSSSSSSSSSSSSSBBSSSSSSSSSBBSSSSSBSSSSS",
     "BBSSSSSSSSSSSSSSSSSSSSSSSSBBSSSSSSBBSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSBBSSSSSSSSSSSSSSSSSSSSBBSSSSSSSSSBBSSSSSSSSSSSSSBBSSSSSSSSSBBSSSSSBSSSSS",
     "BBSSSSSSSSSSSSSBBBBBBBBBSSBBSSBBSSSSSSSSSBBBBBSSSSSSSSSSSSSSSSSSSSBBSSSSSSSSSSSSSSSSSSSSBBSSSSSSSSSSSSSSSSSSSSBBSSBBSSSSBBSSSBBSSBBBBSSSSS",
-    "BBSSSSSSSSSSSSSBBSSSSSBBSSBBSSBBSSSSSSSSSBBBBBSSSSSSSSSSSSSSSSSSSSBBSSSSSSSSBBSSSSSSSSSSBBSSSSSSSSSSSSSSSSSSSSBBSSBBSSBBBBSSSSSSSSSSBSSSSS",
+    "BBSSSSSSSSSSSSSBBSESSSBBSSBBSSBBSSSSSSSSSBBBBBSSSSSSSSSSSSSSSSSSSSBBSSSSSSSSBBSSSSSSSSSSBBSSSSSSSSSSSSSSSSSSSSBBSSBBSSBBBBSSSSSSSSSSBSSSSS",
     "BBSSSSSSSSSSSSSBBSSSSSSSSSSSSSBBSSSSSSSSSBBBBBSSSSSSSSSSSSSSSSSSSSSSSSSSSSSBBBBSSSSSSSSSSSSSSSSSSSSBBSSSSSSSSSBBSSSSSSSSBBSSSSSSSSSSBBBBSS",
-    "BBSSSSSSSSSSSSSBBSSSSSSSSSSSSSBBSSSSSSSSSBBBBBSSSSSSSSSSSSSSSSSSSSSSSSSSSSBBBBBBSSSSSSSSSSSSSSSSSSSBBSSSSSSSSSBBSSSSSSSSBBSSSSSSSSSSBBBBSS",
+    "BBSSSSSSSSSSSZSBBSSSSSSSDSSSSSBBSSSSSSSDSBBBBBSSSSSSSSSSSSSSSSSSSSSSSSSSSSBBBBBBSSSSSSSSSSSSSSSSSSSBBSSSSSSSSSBBSSSSSSSSBBSSSSSSSSSSBBBBSS",
     "BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB",
   ],
 };
@@ -70,19 +83,22 @@ var level1Config = {
 */
 
 const context = bounce.getContext("2d");
-export default function main(bounce) {
-  const runLevel = () => {
-    canvas;
-  };
 
-  window.addEventListener("keypress", (event) => {
-    if (event.code == "Enter") {
-      console.log("before this");
-      document.querySelector(".canvas-cover").style.display = "none";
-    }
-  });
-}
-main(bounce);
+// export default function main(bounce) {
+//   const runLevel = () => {
+//     canvas;
+//   };
+
+//   window.addEventListener("keypress", (event) => {
+//     if (event.code == "Enter") {
+
+//       document.querySelector(".canvas-cover").style.display = "none";
+//     }
+//   });
+// }
+
+
+
 //const [key, value] of Object.entries(object1)
 function loadUsingSpriteSheet() {
   //temporary canvas to extract image data from sprite sheet
@@ -93,26 +109,34 @@ function loadUsingSpriteSheet() {
   let ctx = canvas.getContext("2d");
   ctx.drawImage(sheet_img, 0, 0);
 
-  var temp_canvas = CanvasRenderingContext2D;
-  let newCanvas = document.createElement("canvas");
 
   for (let [key, value] of Object.entries(symbolToSpriteSheetCoords)) {
     // get location and size info
     var infoArray = symbolToSpriteSheetCoords[key];
 
     let [pos_x, pos_y, width, height] = infoArray;
-    // get the image data for this symbol
+    
     var imageData = ctx.getImageData(...infoArray);
 
-    //use another canvas (with the same dimensions as our about-to-be sprite)
-    //newCanvas.width = width;
-    //newCanvas.height = height
-    //let newCtx = newCanvas.getContext('2d')
-    //newCtx.putImageData(imageData, 0, 0)
+    //per-sprite canvas
+    let temp_canvas = document.createElement("canvas");
+    let temp_ctx = temp_canvas.getContext("2d");  
+    temp_canvas.width = width;
+    temp_canvas.height = height;
+  
+    temp_ctx.putImageData(imageData, 0, 0);
 
-    //loadedImages[key] = newCanvas.getI()
+    var data_url = temp_canvas.toDataURL("image/png");
+    var my_new_img = new Image();
+    my_new_img.src = data_url;
 
-    loadedImages[key] = imageData;
+
+
+
+    loadedImages[key] = my_new_img;
+    temp_canvas.remove();
+    
+    // loadedImages[key] = imageData;
   }
   //test:
   drawTileMap();
@@ -130,17 +154,62 @@ function drawTileMap() {
 
     for (let idx = 0; idx < row.length; idx++) {
       var symbol = row.charAt(idx);
-      var imageData = loadedImages[symbol];
+      //var imageData = loadedImages[symbol];
       var x = idx * 12;
-      main_context.putImageData(imageData, x, my_y);
+      //main_context.putImageData(imageData, x, my_y);
+      var img = loadedImages[symbol];
+      main_context.drawImage(img, x, my_y);
     }
   });
+
 }
 
 sheet_img.onload = () => {
-  //console.log("callback");
+  console.log("Spritesheet laoded")
   loadUsingSpriteSheet();
-  //context.drawImage(sheet_img, 0, 0);
-  //buildLevel();
-  //runLevel();
+
+  mainLoopSetup();
 };
+
+
+function mainLoopSetup() {
+  var canvas = document.getElementById("bounce");
+  var context = canvas.getContext('2d')
+
+  let player = new Player(150, 200, loadedImages['PLAYER']);
+
+
+  function mainLoop() {
+    context.clearRect(0, 0, canvas.width, canvas.height);
+
+    drawTileMap();
+    player.update(actionState);
+    player.draw(context);
+
+    requestAnimationFrame(mainLoop);
+  }
+
+  mainLoop();
+  
+}
+
+
+
+window.addEventListener('keydown', logKeyDown);
+window.addEventListener('keyup', logKeyUp);
+
+function logKeyDown(e) {
+  if (e.code == "ArrowRight" || e.code == "KeyD") {
+    actionState['go_right'] = true
+  } else if (e.code == "ArrowLeft" || e.code == "KeyA") {
+    actionState['go_left'] = true
+  }
+}
+
+function logKeyUp(e) {
+  if (e.code == "ArrowRight" || e.code == "KeyD") {
+    actionState['go_right'] = false
+  } else if (e.code == "ArrowLeft" || e.code == "KeyA") {
+    actionState['go_left'] = false
+  }
+}
