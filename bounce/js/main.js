@@ -6,8 +6,23 @@ sheet_img.src = image_dir;
 const TILE_ROW_HEIGHT = 12;
 
 let symbolToSpriteSheetCoords = {
-  S: [0, 0, 12, 12], // format [pos_x, pos_y, width, height]
-  B: [24, 0, 12, 12],
+    // format [pos_x, pos_y, width, height]
+  S: [0, 0, 12, 12], // SKY
+  B: [24, 0, 12, 12], //BRICK
+  D: [24, 72, 12, 12], //DIAMOND
+  A: [48, 72, 12, 12], //ARROW
+  U: [48, 0, 12, 12], //UP_BRICK
+  L: [72, 0, 12, 12], //LOW_BRICK
+  W: [0, 24, 12, 12], //WATER
+  Z: [0, 48, 12, 12], //SIZE_CHANGE_FROM_SMALL_TO_BIG
+  Y: [24, 48, 12, 12], // " BUT_UNDERWATER
+  O: [48, 48, 12, 12], //SIZE_CHANGE_FROM_BIG_TO_SMALL
+  P: [72, 48, 12, 12], // " BUT_UNDERWATER
+  E: [0, 72, 12, 12], // EXTRA_HEALTH
+  J: [24, 24, 12, 12], //JUMP_HIGH_BRICK
+
+
+
 };
 
 //same keys as symbolToSpriteSheetCoords. Will hold ImageData (change later to data URI?)
