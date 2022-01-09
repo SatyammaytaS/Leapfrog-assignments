@@ -199,7 +199,7 @@ function generateObjects() {
 }
 
 sheet_img.onload = () => {
-  console.log("Spritesheet laoded")
+  console.log("Spritesheet loaded")
   loadUsingSpriteSheet();
 
   mainLoopSetup();

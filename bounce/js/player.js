@@ -54,16 +54,18 @@ class Player {
             actionState['jump'] = false
             this.jump();
         } 
-
+        //lsowly decrease jump velocity
         if (this.velY < 0) {
             this.velY += GRAVITY;
             if (this.velY > 0) {
                 this.velY = 0;
             }
         } else {
+            //normal falling
             if (this.falling) {
                 this.velY = GRAVITY;
             } else {
+                console.log('satyam')
                 this.velY = 0;
             }
         }
