@@ -1,7 +1,7 @@
 export const bounce = document.getElementById("bounce");
 
 import { Player } from "./player.js"
-
+import { Block } from './block.js';
 var image_dir = "images/sprite.png";
 var sheet_img = new Image();
 sheet_img.src = image_dir;
@@ -139,10 +139,10 @@ function loadUsingSpriteSheet() {
     // loadedImages[key] = imageData;
   }
   //test:
-  drawTileMap();
+  drawTileMapBG();
 }
 
-function drawTileMap() {
+function drawTileMapBG() {
   var main_canvas = document.getElementById("bounce");
   var main_context = main_canvas.getContext("2d");
 
@@ -154,6 +154,8 @@ function drawTileMap() {
 
     for (let idx = 0; idx < row.length; idx++) {
       var symbol = row.charAt(idx);
+
+    
       //var imageData = loadedImages[symbol];
       var x = idx * 12;
       //main_context.putImageData(imageData, x, my_y);
@@ -161,6 +163,38 @@ function drawTileMap() {
       main_context.drawImage(img, x, my_y);
     }
   });
+
+}
+
+
+function generateObjects() {
+  var ret = {
+    'bricks': []
+  };
+  var main_canvas = document.getElementById("bounce");
+  var main_context = main_canvas.getContext("2d");
+
+  var rows = level1Config.tiles;
+  let my_y = 0;
+
+  rows.forEach(function (row, index) {
+    my_y = index * TILE_ROW_HEIGHT;
+
+    for (let idx = 0; idx < row.length; idx++) {
+      var symbol = row.charAt(idx);
+
+      if (['B', 'U', 'L'].includes(symbol)) {
+          var x = idx * 12;
+          var block = new Block(x, my_y, loadedImages[symbol], symbol);
+          ret['bricks'].push(block);
+       
+      } else {
+        continue;
+      }
+    }
+  });
+
+  return ret;
 
 }
 
@@ -176,14 +210,16 @@ function mainLoopSetup() {
   var canvas = document.getElementById("bounce");
   var context = canvas.getContext('2d')
 
-  let player = new Player(150, 200, loadedImages['PLAYER']);
-
+  let player = new Player(180, 180, loadedImages['PLAYER']);
+  let objects = generateObjects();
+  let allBricks = objects['bricks'];
+  let collisionObjects = allBricks;
 
   function mainLoop() {
     context.clearRect(0, 0, canvas.width, canvas.height);
 
-    drawTileMap();
-    player.update(actionState);
+    drawTileMapBG();
+    player.update(actionState, collisionObjects, context);
     player.draw(context);
 
     requestAnimationFrame(mainLoop);
@@ -203,6 +239,8 @@ function logKeyDown(e) {
     actionState['go_right'] = true
   } else if (e.code == "ArrowLeft" || e.code == "KeyA") {
     actionState['go_left'] = true
+  } else if (e.code == "ArrowUp" || e.code == "KeyW") {
+    actionState['jump'] = true;       //falsified by the player logic itself; single jump only
   }
 }
 
