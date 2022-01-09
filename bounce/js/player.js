@@ -65,7 +65,7 @@ class Player {
             if (this.falling) {
                 this.velY = GRAVITY;
             } else {
-                console.log('satyam')
+                console.log('touched');
                 this.velY = 0;
             }
         }
@@ -74,7 +74,7 @@ class Player {
             var rect = [this.posX + this.velX, this.posY-10, this.rectWidth, this.rectHeight];
             if (this.collisionCheck(rect, collisionObjects)) {
                 this.velX = 0;
-                console.log("aiya");
+                console.log("blocked");
             }
         }
 
