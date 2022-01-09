@@ -65,7 +65,7 @@ class Player {
             if (this.falling) {
                 this.velY = GRAVITY;
             } else {
-                console.log('touched');
+                console.log('contact');
                 this.velY = 0;
             }
         }
