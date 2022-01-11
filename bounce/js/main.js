@@ -210,13 +210,18 @@ function mainLoopSetup() {
   var canvas = document.getElementById("bounce");
   var context = canvas.getContext('2d')
 
-  let player = new Player(180, 180, loadedImages['PLAYER']);
+  let player = new Player(120, 180, loadedImages['PLAYER']);
   let objects = generateObjects();
   let allBricks = objects['bricks'];
   let collisionObjects = allBricks;
 
+  context.translate(0, -200)
+  context.scale(1.75, 1.75)
+
   function mainLoop() {
-    context.clearRect(0, 0, canvas.width, canvas.height);
+    context.translate(-player.velX, -player.velY);
+    //context.clearRect(0, 0, canvas.width, canvas.height);
+    context.clearRect(0, 0, player.posX + canvas.width, player.posY + canvas.height);
 
     drawTileMapBG();
     player.update(actionState, collisionObjects, context);

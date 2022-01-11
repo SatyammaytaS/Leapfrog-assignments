@@ -1,5 +1,5 @@
 const DEFAULT_LIVES = 3
-const VEL_HOR = 2
+const VEL_HOR = 1
 
 import { GRAVITY, DEBUG_DRAW, JUMP_FORCE } from './CONST.js'
 
@@ -14,6 +14,8 @@ class Player {
         this.rectHeight = image.height;
         this.velX = 0;
         this.velY = 0;
+        this.jumpY = 0;
+        this.accY = GRAVITY;
         this.onGround = false;
         this._colDir = null ; //1 2 3 4, in counterclockwise order, 1 is to player's right
         this.falling = false;
@@ -21,7 +23,9 @@ class Player {
 
     jump() {
         if (!self.falling) {
-            this.velY = -JUMP_FORCE;
+
+            //this.velY = -JUMP_FORCE;
+            this.accY -= JUMP_FORCE;
         }
     }
     //update 
@@ -29,10 +33,7 @@ class Player {
         let coffX = 0; //collision offset / margin
         let coffY = 0;
 
-        // apply jump here
-
-        // if (this.onGround) {
-        //     this.velY = 0   ;
+     
     
         if (actionState['go_left']) {
             this.velX = -VEL_HOR;
@@ -43,48 +44,54 @@ class Player {
         }
 
         var check_rect = [this.posX, this.posY, this.rectWidth, this.rectHeight]
-        if (DEBUG_DRAW) {
-            canvasContext.fillStyle = "green";
-            canvasContext.strokeRect(...check_rect);
-        }
-
         this.checkFalling(collisionObjects);
         
         if (this.velY == 0 && actionState['jump']) {
             actionState['jump'] = false
             this.jump();
         } 
-        //lsowly decrease jump velocity
-        if (this.velY < 0) {
-            this.velY += GRAVITY;
-            if (this.velY > 0) {
+
+
+        if (this.velY > 0) {
+            var check_rect = [this.posX, this.posY + 1, this.rectWidth, this.rectHeight]
+            if (this.collisionCheck(check_rect, collisionObjects)) {
+                console.log("Coll1")
+                this.accY = 0;
                 this.velY = 0;
-            }
-        } else {
-            //normal falling
-            if (this.falling) {
-                this.velY = GRAVITY;
-            } else {
-                console.log('contact');
-                this.velY = 0;
-            }
-        }
-      
-        if (this.velX != 0) {
-            var rect = [this.posX + this.velX, this.posY-10, this.rectWidth, this.rectHeight];
-            if (this.collisionCheck(rect, collisionObjects)) {
-                this.velX = 0;
-                console.log("blocked");
             }
         }
 
+        if (this.velY < 0) {
+            var check_rect = [this.posX, this.posY - 1, this.rectWidth, this.rectHeight]
+            if (this.collisionCheck(check_rect, collisionObjects)) {
+                console.log("CollUp")
+                this.accY = GRAVITY;
+                this.velY = 0;
+            }
+        }
+
+     
+        if (this.falling && this.accY <= 0) {
+            this.accY += GRAVITY; 
+        }
+
+        console.log(this.velY)
+        //handling jumping before this
+        var check_rect = [this.posX + this.velX * 2, this.posY - 1 , this.rectWidth, this.rectHeight]
+        if (this.collisionCheck(check_rect, collisionObjects)) {
+            this.velX = 0;  
+        }
+
+
+       // console.log("velY ", this.velY);
+        this.velY += this.accY;
         this.posX += this.velX;
         this.posY += this.velY;     //only jumping; gravity accounted for separately
 
     }
 
     checkFalling(collisionObjects) {
-        var check_rect = [this.posX, this.posY + 1, this.rectWidth, this.rectHeight];
+        var check_rect = [this.posX, this.posY + 3, this.rectWidth, this.rectHeight];
         if (this.collisionCheck(check_rect, collisionObjects)) {
             this.falling = false; //if you collide when moving 1 pixeldownard, not falling
         } else {
@@ -132,9 +139,7 @@ class Player {
         // let us further check if we are on the 'ground'
         if (mY + mH >= oY){
             this.onGround = true;
-        } else {
-            this.onGround = false;
-        }
+        } 
 
 
 
