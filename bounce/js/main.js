@@ -24,7 +24,8 @@ let symbolToSpriteSheetCoords = {
   E: [0, 72, 12, 12], // EXTRA_HEALTH
   J: [24, 24, 12, 12], //JUMP_HIGH_BRICK
   I: [0, 96, 12, 12], //OBSTRACLE_1_METAL_THRONE
-  G: [12, 132, 6, 22],
+  G: [12, 132, 6, 22], //Gate_UNOPENED
+  //C: []
 
 
   PLAYER: [0, 120, 12, 12]
@@ -212,19 +213,24 @@ function mainLoopSetup() {
   var canvas = document.getElementById("bounce");
   var context = canvas.getContext('2d')
 
-  let player = new Player(120, 180, loadedImages['PLAYER']);
+  let player = new Player(1000, 180, loadedImages['PLAYER']);
+  player.ctx = context;
+  player.canvas = canvas;
+
+
   let objects = generateObjects();
   let allBricks = objects['bricks'];
   let collisionObjects = allBricks;
-
+  
   context.translate(0, -200)
   context.scale(1.75, 1.75)
+  context.translate(-780, 0)
 
   function mainLoop() {
-    context.translate(-player.velX, -player.velY);
+    context.translate(-player.totVelX, -player.totVelY);
     //context.clearRect(0, 0, canvas.width, canvas.height);
-    context.clearRect(0, 0, player.posX + canvas.width, player.posY + canvas.height);
-
+    //context.clearRect(0, 0, player.posX + canvas.width, player.posY + canvas.height);
+    context.clearRect(0, 0, 2000, 2000)     //temp; not limiting wipe to within viewport
     drawTileMapBG();
     player.update(actionState, collisionObjects, context);
     player.draw(context);
