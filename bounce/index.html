@@ -15,11 +15,24 @@
     <script type="module" src="js/main.js"></script>
     <script type="module" src="js/player.js"></script>
     <script type="module" src="js/block.js"></script>
+    <script type="module" src="js/enemy.js"></script>
+    <script type="module" src="js/hud.js"></script>
+    <script type="module" src="js/levelmaker.js"></script>
   </head>
   <body>
+    <div id="levelmaker-ui" hidden>
+      <button id="b-scrollright">MOVE &#8594;</button>
+      <button id="b-scrollleft">MOVE &#8592;</button>
+      <button id="b-scrollup">MOVE &#8593;</button>
+      <button id="b-scrolldown">MOVE &#8595;</button>
+      <p>current:</p>
+      <img id="cursym" src="" />
+      <div id="levelmaker-imgbuttons"></div>
+      <button id="savebut">Save level</button>
+    </div>
+
     <div class="canvas-container" id="canvas-container">
       <canvas width="500" height="365" id="bounce"></canvas>
-
       <!-- <div class="canvas-cover">
         <h1>Bounce</h1>
         <div>Press Enter to Play</div>

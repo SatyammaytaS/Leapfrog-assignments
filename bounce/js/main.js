@@ -2,38 +2,19 @@ export const bounce = document.getElementById("bounce");
 
 import { Player } from "./player.js"
 import { Block } from './block.js';
+import { Enemy } from './enemy.js';
+import { Hud } from './hud.js';
+import { SYMBOL_TO_SPRITESHEET_COORDS } from './const.js'
+import { LevelMaker } from './levelmaker.js';
+
 var image_dir = "images/sprite.png";
 var sheet_img = new Image();
 sheet_img.src = image_dir;
 
 const TILE_ROW_HEIGHT = 12;
 
-let symbolToSpriteSheetCoords = {
-    // format [pos_x, pos_y, width, height]
-  S: [0, 0, 12, 12], // SKY
-  B: [24, 0, 12, 12], //BRICK
-  D: [24, 72, 12, 12], //DIAMOND
-  A: [48, 72, 12, 12], //ARROW
-  U: [48, 0, 12, 12], //UP_BRICK
-  L: [72, 0, 12, 12], //LOW_BRICK
-  W: [0, 24, 12, 12], //WATER
-  Z: [0, 48, 12, 12], //SIZE_CHANGE_FROM_SMALL_TO_BIG
-  Y: [24, 48, 12, 12], // " BUT_UNDERWATER
-  O: [48, 48, 12, 12], //SIZE_CHANGE_FROM_BIG_TO_SMALL
-  P: [72, 48, 12, 12], // " BUT_UNDERWATER
-  E: [0, 72, 12, 12], // EXTRA_HEALTH
-  J: [24, 24, 12, 12], //JUMP_HIGH_BRICK
-  I: [0, 96, 12, 12], //OBSTRACLE_1_METAL_THRONE
-  G: [12, 132, 6, 22], //Gate_UNOPENED
-  //C: []
-
-
-  PLAYER: [0, 120, 12, 12]
-
-
-
-};
-
+var levelMaker = null; //loaded later
+var mode = null;  //values are : null, 'PLAYING', 'LEVELMAKER'
 
 let actionState  = {
   'go_left': false,
@@ -41,11 +22,11 @@ let actionState  = {
   'jump': false
 }
 
-//same keys as symbolToSpriteSheetCoords. Will hold ImageData (change later to data URI?)
+//same keys as SYMBOL_TO_SPRITESHEET_COORDS. Will hold ImageData (change later to data URI?)
 let loadedImages = {};
 
 var level1Config = {
-  playerCoords: [0, 0],
+  playerCoords: [1000, 180],
 
   tiles: [
       // ......FOR LEVEL_2......
@@ -66,9 +47,9 @@ var level1Config = {
     "BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBSSBBBBBB",
     "BBSSSSSSSSSSSSSSSSSSSSSSSSBBSSSSSSBBSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSBBSSSSSSSSSSSSSSSSSSSSBBSSSSSSSSSBBSSSSSSSSSSSSSBBSSSSSSSSSBBSSSSSBSSSSS",
     "BBSSSSSSSSSSSSSSSSSSSSSSSSBBSSSSSSBBSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSBBSSSSSSSSSSSSSSSSSSSSBBSSSSSSSSSBBSSSSSSSSSSSSSBBSSSSSSSSSBBSSSSSBSSSSS",
-    "BBSSSSSSSSSSSSSBBBBBBBBBSSBBSSBBSSSSSSSSSBBBBBSSSSSSSSSSSSSSSSSSSSBBSSSSSSSSULSSSSSSSSSSBBSSSSSSSSSSSSSSSSSSSSBBSSBBSSSSBBSSSBBSSBBBBSSSSS",
-    "BBSSSSSSSSSSSSSBBSESSSBBSSBBSSBBSSSSSSSSSBBBBBSSSSSSSSSSSSSSSSSSSSBBSSSSSSSUBBLSSSSSSSSSBBSSSSSSSSSSSSSSSSSSSSBBSSBBSSBBBBSSSSSSSSSSBSSSSS",
-    "BBSSSSSSSSSSSSSBBSSSSSSSSSSSSSBBSSSSSSSSSBBBBBSSSSSSSSSSSSSSSSSSSSSSSSSSSSUBBBBLSSSSSSSSSSSSSSSSSSSBBSSSSSSSSSBBSSSSSSSSBBSSSSSSSSSSBBBBSS",
+    "BBSSSSSSSSSSSSSBBBBBBBBBSSBBSSBBSSSSSSSSSBBBBBSSSSSSSSSSSSSSSSSSSSBBSSSSSSSSSSSSSSSSSSSSBBSSSSSSSSSSSSSSSSSSSSBBSSBBSSSSBBSSSBBSSBBBBSSSSS",
+    "BBSSSSSSSSSSSSSBBSSSSSBBSSBBSSBBSSSSSSSSSBBBBBSSSSSSSSSSSSSSSSSSSSBBSESSSSSUBBLSSSSSSSSSBBSSSSSSSSSSSSSSSSSSSSBBSSBBSSBBBBSSSSSSSSSSBSSSSS",
+    "BBSSSSSSSSSSSSSBBSSSSSSSSSSSSSBBSSSSSSSSSBBBBBSSSSSSSSSSSSSSSSSPSSSSSSSSSSUBBBBLSSSSSSSSSSSSSSSSSSSBBSSSSSSSSSBBSSSSSSSSBBSSSSSSSSSSBBBBSS",
     "BBSSSSSSSSSSSISBBSSSSSSSDSSSSSBBZSSSSSSDSBBBBBSSSSSSSSSSSSSSSSSSSSSSSSSSSUBBBBBBLSSSSSSSSSSSSSSSSSSBBSSSSSSSSSBBSSSSSSSSBBSSSSSSSISSBBBBSS",
     "BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB",
   ],
@@ -113,9 +94,9 @@ function loadUsingSpriteSheet() {
   ctx.drawImage(sheet_img, 0, 0);
 
 
-  for (let [key, value] of Object.entries(symbolToSpriteSheetCoords)) {
+  for (let [key, value] of Object.entries(SYMBOL_TO_SPRITESHEET_COORDS)) {
     // get location and size info
-    var infoArray = symbolToSpriteSheetCoords[key];
+    var infoArray = SYMBOL_TO_SPRITESHEET_COORDS[key];
 
     let [pos_x, pos_y, width, height] = infoArray;
     
@@ -142,14 +123,14 @@ function loadUsingSpriteSheet() {
     // loadedImages[key] = imageData;
   }
   //test:
-  drawTileMapBG();
+  //drawTileMapBG();
 }
 
-function drawTileMapBG() {
+function drawTileMapBG(tiles) {
   var main_canvas = document.getElementById("bounce");
   var main_context = main_canvas.getContext("2d");
 
-  var rows = level1Config.tiles;
+  var rows = tiles;
   let my_y = 0;
 
   rows.forEach(function (row, index) {
@@ -157,6 +138,12 @@ function drawTileMapBG() {
 
     for (let idx = 0; idx < row.length; idx++) {
       var symbol = row.charAt(idx);
+
+      //don't draw dynamic objects (enemies, the player, etc.) ; they have their
+      //own draw() functions. Replace such tiles with sky.
+      if (symbol == 'E' || symbol == 'P') {
+        symbol = 'S';   
+      }
 
     
       //var imageData = loadedImages[symbol];
@@ -170,14 +157,17 @@ function drawTileMapBG() {
 }
 
 
-function generateObjects() {
+function generateObjects(tileset) {
   var ret = {
-    'bricks': []
+    'bricks': [],
+    'enemies': [],
+    'player': null,
   };
+
   var main_canvas = document.getElementById("bounce");
   var main_context = main_canvas.getContext("2d");
 
-  var rows = level1Config.tiles;
+  var rows = tileset;
   let my_y = 0;
 
   rows.forEach(function (row, index) {
@@ -185,14 +175,20 @@ function generateObjects() {
 
     for (let idx = 0; idx < row.length; idx++) {
       var symbol = row.charAt(idx);
+      var x = idx * 12;
 
       if (['B', 'U', 'L'].includes(symbol)) {
-          var x = idx * 12;
           var block = new Block(x, my_y, loadedImages[symbol], symbol);
           ret['bricks'].push(block);
        
-      } else {
-        continue;
+      } else if (symbol == 'E') {
+          var enem = new Enemy(x, my_y, loadedImages[symbol], 'E');
+          ret['enemies'].push(enem);
+       } else  if (symbol == 'P') {
+          ret['player'] = new Player(x, my_y, loadedImages['P'], loadedImages['Q']);
+        
+       } else {
+         continue;
       }
     }
   });
@@ -205,37 +201,88 @@ sheet_img.onload = () => {
   console.log("Spritesheet loaded")
   loadUsingSpriteSheet();
 
-  mainLoopSetup();
+  levelMaker = new LevelMaker(loadedImages, document.getElementById('bounce'));
+
+  var canvas = document.getElementById("bounce");
+  var context = canvas.getContext('2d');
+  context.font = '32px serif';
+  context.fillText("Z -> standard level", 20, 50)
+  context.fillText("X -> level maker", 20, 100)
+  context.fillText("C -> play custom-made level", 20, 150)
+
+
+
+
 };
 
 
-function mainLoopSetup() {
-  var canvas = document.getElementById("bounce");
-  var context = canvas.getContext('2d')
+function play(tileset) {
 
-  let player = new Player(1000, 180, loadedImages['PLAYER']);
+  var canvas = document.getElementById("bounce");
+  var context = canvas.getContext('2d');
+
+  let objects = generateObjects(tileset);
+  let allBricks = objects['bricks'];
+  let allEnemies = objects['enemies'];
+  let collisionObjects = allBricks;
+  
+  let player = objects['player'];
   player.ctx = context;
   player.canvas = canvas;
 
 
-  let objects = generateObjects();
-  let allBricks = objects['bricks'];
-  let collisionObjects = allBricks;
-  
-  context.translate(0, -200)
-  context.scale(1.75, 1.75)
-  context.translate(-780, 0)
+  let hud = new Hud(player);
+  var origX = player.posX;
+  var origY = player.posY;
 
-  function mainLoop() {
+  
+
+
+  function resetGame() {
+  
+    player.posX = origX;
+    player.posY = origY;
+    player.reset();
+
+    context.setTransform();   //reset   (does not account for scale)
+    //context.translate(0, -200)
+    context.translate(-(origX + 200), -origY)
+    context.scale(1.75, 1.75)
+    //context.translate(-origX + 150, 0)
+
+  }
+
+  resetGame();
+  context.clearRect(0, 0, 138 * 12, 22 * 12);
+
+  async function mainLoop() {
     context.translate(-player.totVelX, -player.totVelY);
     //context.clearRect(0, 0, canvas.width, canvas.height);
     //context.clearRect(0, 0, player.posX + canvas.width, player.posY + canvas.height);
-    context.clearRect(0, 0, 2000, 2000)     //temp; not limiting wipe to within viewport
-    drawTileMapBG();
-    player.update(actionState, collisionObjects, context);
-    player.draw(context);
+    context.clearRect(0, 0, 5000, 5000)     //temp; not limiting wipe to within viewport
+    drawTileMapBG(tileset);
 
-    requestAnimationFrame(mainLoop);
+    for (let enemy of allEnemies) {
+      enemy.update(collisionObjects);
+      enemy.draw(context);
+    }
+    player.update(actionState, collisionObjects, allEnemies, context);
+    player.draw(context);
+    hud.draw(context); 
+
+    if (player.alive == false) {
+      //sleep for 2 secs, and reload
+      await new Promise(r => setTimeout(r, 3000));
+      resetGame();
+      player.alive = true;
+
+    }
+
+    //don't interfere with levelmaker
+    if (mode == 'PLAYING') {
+      requestAnimationFrame(mainLoop);
+
+    }
   }
 
   mainLoop();
@@ -248,6 +295,55 @@ window.addEventListener('keydown', logKeyDown);
 window.addEventListener('keyup', logKeyUp);
 
 function logKeyDown(e) {
+
+  if (e.code == 'KeyZ') {
+    //playGame
+    mode = 'PLAYING';
+    document.getElementById('levelmaker-ui').hidden = true;
+    levelMaker.running = false;
+
+    //check for created level
+    play(level1Config.tiles);
+  }
+  if (e.code == 'KeyX') {
+    //level maker
+    mode = 'LEVELMAKER';
+    document.getElementById('levelmaker-ui').hidden = false;
+
+    levelMaker.run();
+  }
+  if (e.code == "KeyC") {
+    //play (possibly non-existent) custom level
+    mode = 'PLAYING';
+    document.getElementById('levelmaker-ui').hidden = true;
+    levelMaker.running = false;
+
+    var tileset = null;
+
+    //option 1: explicit save (by clicking 'save' in levelMaker)
+    if (localStorage.getItem("tileset")) {
+      tileset = JSON.parse(localStorage.getItem("tileset"));
+      
+    } 
+    //option 2 : just use whatever data is in the level maker;
+    //this allows us to design, play, and redesign levels
+    else if (levelMaker.tileset) {
+      tileset = levelMaker.tileset;
+    }
+
+
+    if (tileset) {
+      play(tileset);
+
+
+    }
+  }
+
+  if (mode == 'LEVELMAKER') {
+    return;         // disable movement key effects during level creation
+  }
+
+
   if (e.code == "ArrowRight" || e.code == "KeyD") {
     actionState['go_right'] = true
   } else if (e.code == "ArrowLeft" || e.code == "KeyA") {
@@ -255,9 +351,14 @@ function logKeyDown(e) {
   } else if (e.code == "ArrowUp" || e.code == "KeyW") {
     actionState['jump'] = true;       //falsified by the player logic itself; single jump only
   }
+
 }
 
 function logKeyUp(e) {
+   if (mode == 'LEVELMAKER') {
+    return;         // disable movement key effects during level creation
+  }
+
   if (e.code == "ArrowRight" || e.code == "KeyD") {
     actionState['go_right'] = false
   } else if (e.code == "ArrowLeft" || e.code == "KeyA") {

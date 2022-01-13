@@ -1,16 +1,19 @@
 const DEFAULT_LIVES = 3
-const VEL_HOR = 0.5
+const VEL_HOR = 1
 const VEL_SLOPE = 1
 
-import { GRAVITY, DEBUG_DRAW, JUMP_FORCE } from './CONST.js'
+import { GRAVITY, DEBUG_DRAW, JUMP_FORCE, BOUNCE_FACTOR } from './CONST.js'
 
 class Player {
 
-    constructor(posX, posY, image) {
+    constructor(posX, posY, image, deadImage) {
         this.posX = posX
         this.posY = posY
         this.lives = DEFAULT_LIVES
-        this.image = image
+        this.livingImage = image
+        this.deadImage = deadImage
+        this.curImage = image;
+
         this.rectWidth = image.width;
         this.rectHeight = image.height;
         this.velX = 0;
@@ -22,6 +25,10 @@ class Player {
         this.onGround = false;
         this._colDir = null ; //1 2 3 4, in counterclockwise order, 1 is to player's right
         this.falling = false;
+        this.bouncing = false;
+
+        this.lives = 3;     
+        this.alive = true;
 
         this.totVelX = 0;
         this.totVelY = 0;
@@ -30,17 +37,34 @@ class Player {
         this.ctx = null;    //for debug
         this.canvas = null;
     }
+    reset() {
+        this.curImage = this.livingImage;
 
+        this.velX = 0;
+        this.velY = 0;
+        this.velSlope = 0;      // > 0 means up (U) slope, < 0 means L slope
+        this.jumpY = 0;
+        this.accY = GRAVITY;
+        this.theta = 0;         // in degrees; this facilitates motion along a slope
+        this.onGround = false;
+        this._colDir = null ; //1 2 3 4, in counterclockwise order, 1 is to player's right
+        this.falling = false;
+        this.bouncing = false;
+        this.alive = true;
+
+        this.totVelX = 0;
+        this.totVelY = 0;
+    }
     jump() {
         if (this.theta != 0) { return ; }
-        if (!self.falling) {
+        if (this.velY == 0) {
 
             //this.velY = -JUMP_FORCE;
             this.accY -= JUMP_FORCE;
         }
     }
     //update 
-    update(actionState, collisionObjects, canvasContext) {
+    update(actionState, collisionObjects, enemies, canvasContext) {
         this.theta = 0;         //reset angle
 
 
@@ -57,7 +81,18 @@ class Player {
             this.velX = 0;
         }
 
+
         var check_rect = [this.posX, this.posY, this.rectWidth, this.rectHeight]
+
+        //check for enemy collision
+        for (let enemy of enemies) {
+            if (this.actualCollisionCheck(check_rect, enemy.getCollisionRect(), 'E')) {
+                this.lives -= 1;
+                this.curImage = this.deadImage;
+                this.alive = false;
+            }
+        }
+
         this.checkFalling(collisionObjects);
         
         if (this.velY == 0 && actionState['jump']) {
@@ -66,15 +101,25 @@ class Player {
         } 
 
 
+        //falling
         if (this.velY > 0) {
             var check_rect = [this.posX, this.posY + 1, this.rectWidth, this.rectHeight]
             if (this.collisionCheck(check_rect, collisionObjects)) {
                 //console.log("Coll1")
                 this.accY = 0;
+   
+                // this.accY = -BOUNCE_FACTOR * this.accY;
+                // if (Math.abs(this.accY) <= 0.005) {
+                //     this.accY = 0;
+                //     this.bouncing = false;
+                // }
+               
+         
                 this.velY = 0;
             }
         }
 
+        //ceiling crash
         if (this.velY < 0) {
             var check_rect = [this.posX, this.posY - 1, this.rectWidth, this.rectHeight]
             if (this.collisionCheck(check_rect, collisionObjects)) {
@@ -85,7 +130,7 @@ class Player {
         }
 
      
-        if (this.falling && this.accY <= 0) {
+        if (!this.bouncing && this.falling && this.accY <= 0) {
             if (this.theta == 0) {
                 this.accY += GRAVITY; 
 
@@ -115,11 +160,11 @@ class Player {
             this.totVelY = (this.theta == 45 ? -1 : 1) * this.totVelX            // NOTE: this means we can't jump on slopes currently
             //this.totVelY = -this.velX *  Math.sin(this.theta * (180 / Math.PI));
         } else {
-            console.log("Theta is 0. Are you on a slope?")
+           // console.log("Theta is 0. Are you on a slope?")
         }
 
         if (this.totVelX != 0 || this.totVelY != 0) {
-            console.log("vX = ",  this.totVelX, "vY = ", this.totVelY);
+           // console.log("vX = ",  this.totVelX, "vY = ", this.totVelY);
 
         }
         this.posX += this.totVelX;
@@ -290,6 +335,14 @@ class Player {
 
                 if (cond_1 && cond_2) {
 
+                    //temp fix for going down on U-slope problem
+                    if (objtype == 'U' && this.velX < 0) {
+                        console.log("SLOPEULEFT ", x, y, oX)
+                        if (x < oX + oW -3) {
+                            return false;
+                        }
+                    }
+
                     if (DEBUG_DRAW) {
                         if (objtype == 'U') {
                             this.ctx.fillStyle = 'purple';
@@ -303,7 +356,7 @@ class Player {
                     } else {
                         this.theta = 135
                     }
-                    console.log("A-HA")
+                    //console.log("A-HA")
                     return true;
                 }
 
@@ -318,7 +371,7 @@ class Player {
     
     draw(canvasContext) {
      
-        canvasContext.drawImage(this.image, this.posX, this.posY);
+        canvasContext.drawImage(this.curImage, this.posX, this.posY);
     }
 
     //draw
