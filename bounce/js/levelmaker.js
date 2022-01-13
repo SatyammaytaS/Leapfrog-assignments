@@ -19,7 +19,10 @@ class LevelMaker {
         document.getElementById('cursym').src = this.loadedImages['B'].src;
 
 
-        this.initialOffset = [185, 270];        //hardcoded vals for now; clientX and clientY are null
+        var canvasRect = this.canvas.getBoundingClientRect();
+        this.initialOffset = [canvasRect.left, canvasRect.top + 90];
+        console.log(this.initialOffset);
+        //this.initialOffset = [185, 270];        //hardcoded vals for now; clientX and clientY are null
 
 
     
@@ -77,6 +80,7 @@ class LevelMaker {
                 return;
             }
             let mousePos = [evt.clientX, evt.clientY];
+            console.log(mousePos);
 
             //get tile position
             var colIdx = Math.floor((mousePos[0] - this.initialOffset[0] + this.x * SCALE) / (12 * SCALE) );
@@ -98,6 +102,7 @@ class LevelMaker {
     }
 
     drawGrid() {
+        this.ctx.strokeStyle = 'green';
         //draw vertical lines
         for (var i = 0; i < this.width; i += 12) {
             

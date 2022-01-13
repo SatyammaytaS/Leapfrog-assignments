@@ -232,22 +232,18 @@ function play(tileset) {
 
 
   let hud = new Hud(player);
-  var origX = player.posX;
-  var origY = player.posY;
 
   
 
 
   function resetGame() {
   
-    player.posX = origX;
-    player.posY = origY;
     player.reset();
 
     context.setTransform();   //reset   (does not account for scale)
     //context.translate(0, -200)
-    context.translate(-(origX + 200), -origY)
     context.scale(1.75, 1.75)
+    context.translate(-player.origPos[0] + 100 , -player.origPos[1] + 50);
     //context.translate(-origX + 150, 0)
 
   }
@@ -281,8 +277,8 @@ function play(tileset) {
     //don't interfere with levelmaker
     if (mode == 'PLAYING') {
       requestAnimationFrame(mainLoop);
-
-    }
+ 
+    } 
   }
 
   mainLoop();
@@ -302,6 +298,8 @@ function logKeyDown(e) {
     document.getElementById('levelmaker-ui').hidden = true;
     levelMaker.running = false;
 
+    context.setTransform();     //reset transforms
+
     //check for created level
     play(level1Config.tiles);
   }
@@ -310,6 +308,7 @@ function logKeyDown(e) {
     mode = 'LEVELMAKER';
     document.getElementById('levelmaker-ui').hidden = false;
 
+    context.setTransform();
     levelMaker.run();
   }
   if (e.code == "KeyC") {
@@ -333,6 +332,7 @@ function logKeyDown(e) {
 
 
     if (tileset) {
+      context.setTransform();
       play(tileset);
 
 

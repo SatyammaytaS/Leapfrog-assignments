@@ -7,6 +7,7 @@ import { GRAVITY, DEBUG_DRAW, JUMP_FORCE, BOUNCE_FACTOR } from './CONST.js'
 class Player {
 
     constructor(posX, posY, image, deadImage) {
+        this.origPos = [posX, posY];     //keep track of original position (for level reset)
         this.posX = posX
         this.posY = posY
         this.lives = DEFAULT_LIVES
@@ -20,7 +21,7 @@ class Player {
         this.velY = 0;
         this.velSlope = 0;      // > 0 means up (U) slope, < 0 means L slope
         this.jumpY = 0;
-        this.accY = GRAVITY;
+        this.accY = 0;
         this.theta = 0;         // in degrees; this facilitates motion along a slope
         this.onGround = false;
         this._colDir = null ; //1 2 3 4, in counterclockwise order, 1 is to player's right
@@ -40,6 +41,8 @@ class Player {
     reset() {
         this.curImage = this.livingImage;
 
+        this.posX = this.origPos[0];
+        this.posY = this.origPos[1];
         this.velX = 0;
         this.velY = 0;
         this.velSlope = 0;      // > 0 means up (U) slope, < 0 means L slope
